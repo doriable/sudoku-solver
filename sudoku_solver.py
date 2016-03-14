@@ -174,6 +174,7 @@ def get_all_related(element):
 
     return related_elements
 
+
 ###############################################################################
 ## (4) Solving the Sudoku
 
@@ -182,3 +183,40 @@ def solve_sudoku(puzzle):
 
     # Get dictionary based on current sudoku puzzle
     elements_values = set_grid(puzzle)
+
+    # Pseudo Code:
+    # For each element in the puzzle
+    # Find all the related elements in a list
+    # If the given element has a single value, eliminate that value from all other dependencies
+    # Repeat unitl all values in the dictionary only has 1 value
+
+    while sum(len(elements_values[elem]) for elem in elements_values) > 81:
+        for elem in elements_values:
+            values = elements_values.get(elem)
+            if len(values) == 1:
+                related_elements = get_all_related(elem)
+                for r_elem in related_elements:
+                    related_element_values = elements_values.get(r_elem)
+                    if values[0] in related_element_values:
+                        elements_values.get(r_elem).pop(related_element_values.index(values[0]))
+
+    return elements_values
+
+
+###############################################################################
+## (5) Running the sudoku solver
+
+if __name__ == "__main__":
+    with open('sample_puzzle.txt', 'r') as puzzle_file:
+
+        # Initiate new puzzle
+        puzzle = []
+
+        # Parse the puzzle_file
+        for lines in puzzle_file:
+            line = lines.strip().split()
+            for char in line:
+                puzzle.append(char)
+
+        solved_dict = solve_sudoku(puzzle)
+        print solved_dict
