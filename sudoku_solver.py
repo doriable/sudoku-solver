@@ -88,7 +88,7 @@ def set_grid(puzzle):
     elements_values = dict()
 
     # Loop through the puzzle and set the grid elements and values to dict
-    for i in xrange(puzzle):
+    for i in xrange(len(puzzle)):
         if puzzle[i] == 0:
             elements_values[grid_elements[i]] = all_digits
         else:
@@ -199,6 +199,16 @@ def solve_sudoku(puzzle):
                     related_element_values = elements_values.get(r_elem)
                     if values[0] in related_element_values:
                         elements_values.get(r_elem).pop(related_element_values.index(values[0]))
+
+    # Now to eliminate the zeroes
+
+    # Pseudo Code:
+    # For each element in the new elements_value dict
+    # If there is a 0, then pull all other dependecies
+    # Check to see what "makes sense there"
+    # Fill in that list of new things
+    # Fun the previous process again
+    # Iterate between these two steps until there are only 81 non-zero values
 
     return elements_values
 
