@@ -192,7 +192,7 @@ def solve_sudoku(puzzle):
     # Repeat unitl all values in the dictionary only has 1 value
 
     while sum(len(elements_values[elem]) for elem in elements_values) > 81:
-        # print sum(len(elements_values[elem]) for elem in elements_values)
+        print sum(len(elements_values[elem]) for elem in elements_values)
         for elem in elements_values:
             values = elements_values.get(elem)
             # print values
