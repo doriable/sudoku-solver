@@ -79,7 +79,7 @@ def set_grid(puzzle):
 
     rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
     cols = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-    all_digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+    # all_digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 
     # First generate a list of all grid elements
     grid_elements = [r + c for r in rows for c in cols]
@@ -89,11 +89,12 @@ def set_grid(puzzle):
 
     # Loop through the puzzle and set the grid elements and values to dict
     for i in xrange(len(puzzle)):
-        if puzzle[i] == 0:
-            elements_values[grid_elements[i]] = all_digits
+        if puzzle[i] == '0':
+            elements_values[grid_elements[i]] = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
         else:
             elements_values[grid_elements[i]] = [puzzle[i]]
 
+    # print elements_values
     return elements_values
 
 
@@ -140,39 +141,39 @@ def get_all_related(element):
     # Add all the elements in the same 'square' as the given element
     if row in ['A', 'B', 'C']:
         if digit in ['1', '2', '3']:
-            for elem in [r + c for r in ['A', 'B', 'C'] for c in ['1', '2', '3']]:
+            for elem in ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3']:
                 related_elements.add(elem)
         elif digit in ['4', '5', '6']:
-            for elem in [r + c for r in ['A', 'B', 'C'] for c in ['4', '5', '6']]:
+            for elem in ['A4', 'A5', 'A6', 'B4', 'B5', 'B6', 'C4', 'C5', 'C6']:
                 related_elements.add(elem)
         elif digit in ['7', '8', '9']:
-            for elem in [r + c for r in ['A', 'B', 'C'] for c in ['7', '8', '9']]:
+            for elem in ['A7', 'A8', 'A9', 'B7', 'B8', 'B9', 'C7', 'C8', 'C9']:
                 related_elements.add(elem)
     elif row in ['D', 'E', 'F']:
         if digit in ['1', '2', '3']:
-            for elem in [r + c for r in ['D', 'E', 'F'] for c in ['1', '2', '3']]:
+            for elem in ['D1', 'D2', 'D3', 'E1', 'E2', 'E3', 'F1', 'F2', 'F3']:
                 related_elements.add(elem)
         elif digit in ['4', '5', '6']:
-            for elem in [r + c for r in ['D', 'E', 'F'] for c in ['4', '5', '6']]:
+            for elem in ['D4', 'D5', 'D6', 'E4', 'E5', 'E6', 'F4', 'F5', 'F6']:
                 related_elements.add(elem)
         elif digit in ['7', '8', '9']:
-            for elem in [r + c for r in ['D', 'E', 'F'] for c in ['7', '8', '9']]:
+            for elem in ['D7', 'D8', 'D9', 'E7', 'E8', 'E9', 'F7', 'F8', 'F9']:
                 related_elements.add(elem)
     elif row in ['G', 'H', 'I']:
         if digit in ['1', '2', '3']:
-            for elem in [r + c for r in ['G', 'H', 'I'] for c in ['1', '2', '3']]:
+            for elem in ['G1', 'G2', 'G3', 'H1', 'H2', 'H3', 'I1', 'I2', 'I3']:
                 related_elements.add(elem)
         elif digit in ['4', '5', '6']:
-            for elem in [r + c for r in ['G', 'H', 'I'] for c in ['4', '5', '6']]:
+            for elem in ['G4', 'G5', 'G6', 'H4', 'H5', 'H6', 'I4', 'I5', 'I6']:
                 related_elements.add(elem)
         elif digit in ['7', '8', '9']:
-            for elem in [r + c for r in ['G', 'H', 'I'] for c in ['7', '8', '9']]:
+            for elem in ['G7', 'G8', 'G9', 'H7', 'H8', 'H9', 'I7', 'I8', 'I9']:
                 related_elements.add(elem)
 
     # Pop the element itself -- we only want the related elements to compare
     related_elements.remove(element)
 
-    return related_elements
+    return list(related_elements)
 
 
 ###############################################################################
@@ -191,24 +192,22 @@ def solve_sudoku(puzzle):
     # Repeat unitl all values in the dictionary only has 1 value
 
     while sum(len(elements_values[elem]) for elem in elements_values) > 81:
+        # print sum(len(elements_values[elem]) for elem in elements_values)
         for elem in elements_values:
             values = elements_values.get(elem)
+            # print values
+            # print len(values)
             if len(values) == 1:
+                # print "##############"
                 related_elements = get_all_related(elem)
+                # print related_elements
                 for r_elem in related_elements:
                     related_element_values = elements_values.get(r_elem)
                     if values[0] in related_element_values:
-                        elements_values.get(r_elem).pop(related_element_values.index(values[0]))
-
-    # Now to eliminate the zeroes
-
-    # Pseudo Code:
-    # For each element in the new elements_value dict
-    # If there is a 0, then pull all other dependecies
-    # Check to see what "makes sense there"
-    # Fill in that list of new things
-    # Fun the previous process again
-    # Iterate between these two steps until there are only 81 non-zero values
+                        # print related_element_values.index(values[0])
+                        # print r_elem
+                        # print elements_values[r_elem]
+                        elements_values[r_elem].pop(related_element_values.index(values[0]))
 
     return elements_values
 
