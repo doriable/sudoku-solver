@@ -1,6 +1,17 @@
 """Sudoku Solver"""
 
 ###############################################################################
+## (0) Reference Materials
+
+# Peter Norvig – Solving Every Sudoku Puzzle
+### http://norvig.com/sudoku.html
+### http://norvig.com/sudopy.shtml
+
+# Algorithm for Solving Sudoku
+### http://stackoverflow.com/questions/1697334/algorithm-for-solving-sudoku
+
+
+###############################################################################
 ## (1) Logic
 
 # First, we want to set all the legal values to every cell
@@ -53,28 +64,28 @@ def set_grid(puzzle):
     """Takes a puzzle as a list and assigns it a grid unit in a dict.
 
     Puzzles are input as a list and empty squares are set as 0.
-    e.g. puzzle = [7, 9, 0, 0, 0, 0, 3, 0, 0,
-                   0, 0, 0, 0, 0, 6, 9, 0, 0,
-                   8, 0, 0, 0, 3, 0, 0, 7, 6,
-                   0, 0, 0, 0, 0, 5, 0, 0, 2,
-                   0, 0, 5, 4, 1, 8, 7, 0, 0,
-                   4, 0, 0, 7, 0, 0, 0, 0, 0,
-                   6, 1, 0, 0, 9, 0, 0, 0, 8,
-                   0, 0, 2, 3, 0, 0, 0, 0, 0,
-                   0, 0, 9, 0, 0, 0, 0, 5, 4]
+    e.g. puzzle = [4, 2, 0, 0, 0, 0, 8, 1, 0,
+                   8, 0, 7, 0, 0, 0, 0, 9, 4,
+                   0, 3, 9, 0, 4, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 1, 0, 0, 7,
+                   3, 6, 0, 7, 0, 5, 0, 8, 2,
+                   7, 0, 0, 3, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 2, 0, 9, 5, 0,
+                   2, 8, 0, 0, 0, 0, 6, 0, 1,
+                   0, 9, 4, 0, 0, 0, 0, 7, 3]
 
         would represent the puzzle:
-            7 9 . | . . . | 3 . .
-            . . . | . . 6 | 9 . .
-            8 . . | . 3 . | . 7 6
+            4 2 . | . . . | 8 1 .
+            8 . 7 | . . . | . 9 4
+            . 3 9 | . 4 . | . . .
             ______+_______+______
-            . . . | . . 5 | . . 2
-            . . 5 | 4 1 8 | 7 . .
-            4 . . | 7 . . | . . .
+            . . . | . . 1 | . . 7
+            3 6 . | 7 . 5 | . 8 2
+            7 . . | 3 . . | . . .
             ______+_______+______
-            6 1 . | . 9 . | . . 8
-            . . 2 | 3 . . | . . .
-            . . 9 | . . . | . 5 4
+            . . . | . 2 . | 9 5 .
+            2 8 . | . . . | 6 . 1
+            . 9 4 | . . . | . 7 3
     """
 
     rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
@@ -195,18 +206,11 @@ def solve_sudoku(puzzle):
         print sum(len(elements_values[elem]) for elem in elements_values)
         for elem in elements_values:
             values = elements_values.get(elem)
-            # print values
-            # print len(values)
             if len(values) == 1:
-                # print "##############"
                 related_elements = get_all_related(elem)
-                # print related_elements
                 for r_elem in related_elements:
                     related_element_values = elements_values.get(r_elem)
                     if values[0] in related_element_values:
-                        # print related_element_values.index(values[0])
-                        # print r_elem
-                        # print elements_values[r_elem]
                         elements_values[r_elem].pop(related_element_values.index(values[0]))
 
     return elements_values
@@ -216,7 +220,7 @@ def solve_sudoku(puzzle):
 ## (5) Running the sudoku solver
 
 if __name__ == "__main__":
-    with open('sample_puzzle.txt', 'r') as puzzle_file:
+    with open('sample_puzzle2.txt', 'r') as puzzle_file:
 
         # Initiate new puzzle
         puzzle = []
